@@ -1,0 +1,19 @@
+{
+	"cocktails": [
+		{
+			"title": "you think you just fell out of a coconut tree?",
+			"color": "#f1eef1",
+			"ingredients": ["vodka", "coconut cream", "lime juice"]
+		},
+		{
+			"title": "brat and it looks the same but it's a cocktail so you drink it",
+			"color": "#8ace00",
+			"ingredients": ["vodka", "melon liqueur", "coconut water", "fresh lime juice", "seltzer"]
+		},
+		{
+			"title": "i guess the apple don't fall far from the tree (shot)",
+			"color": "rgb(152,41,46)",
+			"ingredients": ["whisky", "sour apple schnapps", "cranberry juice", "club soda"]
+		}
+	]
+}

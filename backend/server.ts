@@ -11,7 +11,7 @@ connect(
 ).then(() => console.log("connected to db"));
 
 app
-  .listen(PORT, "localhost", function () {
+  .listen(PORT, function () {
     console.log(`Server is running on port ${PORT}.`);
   })
   .on("error", (err: any) => {

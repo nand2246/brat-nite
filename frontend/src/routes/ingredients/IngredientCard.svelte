@@ -21,6 +21,7 @@
 			ingredientId
 		});
 		volunteer = undefined;
+		expanded = false;
 	}
 
 	function switchExpanded() {
@@ -44,19 +45,26 @@
 			<tr>
 				<td>changed your mind?</td>
 				<td
-					><button on:click={unassignVolunteer}>
-						i am {volunteer} and i am not going to bring this anymore</button
+					><button on:click={() => (expanded = true)}>
+						i am not going to bring {name} anymore</button
 					></td
 				>
 			</tr>
 		</table>
 	{/if}
 
+	{#if volunteer && expanded}
+		<p>are you sure you are {volunteer}?</p>
+		<button on:click={unassignVolunteer}
+			>yes, i am {volunteer} and i will no longer be bringing {name}</button
+		>
+	{/if}
+
 	{#if !volunteer && !expanded}
 		<button on:click={switchExpanded}>i want to bring {name}</button>
 	{/if}
 
-	{#if expanded}
+	{#if !volunteer && expanded}
 		<form on:submit={assignVolunteer}>
 			<label for="volunteer">what is your name?</label>
 			<input bind:value={volunteerInput} type="text" name="volunteer" />

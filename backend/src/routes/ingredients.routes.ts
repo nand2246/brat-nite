@@ -30,6 +30,20 @@ class IngredientsRoutes {
         res.status(500).json({ message: "Internal server error" });
       }
     });
+
+    this.router.post("/unassignVolunteer", async function (req, res) {
+      const { ingredientId } = req.body;
+      try {
+        await Ingredient.updateOne(
+          { _id: ingredientId },
+          { $unset: { volunteer: "" } }
+        );
+
+        return res.send(await Ingredient.findById(ingredientId));
+      } catch (error) {
+        res.status(500).json({ message: "Internal server error" });
+      }
+    });
   }
 }
 

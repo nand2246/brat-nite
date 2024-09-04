@@ -2,26 +2,29 @@
 	import axios from 'axios';
 	import { PUBLIC_BACKEND_URL } from '$env/static/public';
 
+	export let ingredientId: string, name: string, volunteer: string | undefined;
+
 	let expanded: boolean = false,
 		volunteerInput: string = '';
 
-	export let ingredientId: string, name: string, volunteer: string | undefined;
-
-	export async function assignVolunteer() {
+	async function assignVolunteer() {
 		await axios.post(`${PUBLIC_BACKEND_URL}/ingredients/assignVolunteer`, {
 			ingredientId,
 			volunteer: volunteerInput
 		});
+		volunteer = volunteerInput;
+		expanded = false;
+	}
+
+	async function unassignVolunteer() {
+		await axios.post(`${PUBLIC_BACKEND_URL}/ingredients/unassignVolunteer`, {
+			ingredientId
+		});
+		volunteer = undefined;
 	}
 
 	function switchExpanded() {
 		expanded = !expanded;
-	}
-
-	async function handleSubmit() {
-		assignVolunteer();
-		volunteer = volunteerInput;
-		expanded = false;
 	}
 </script>
 
@@ -33,14 +36,28 @@
 	<h1>{name}</h1>
 	{#if volunteer}
 		<h3>claimed!</h3>
-		<h2>who's bringing {name}?</h2>
-		<h4>{volunteer}</h4>
+		<table>
+			<tr>
+				<td> who's bringing {name}?</td>
+				<td><strong>{volunteer}</strong></td>
+			</tr>
+			<tr>
+				<td>changed your mind?</td>
+				<td
+					><button on:click={unassignVolunteer}>
+						i am {volunteer} and i am not going to bring this anymore</button
+					></td
+				>
+			</tr>
+		</table>
 	{/if}
+
 	{#if !volunteer && !expanded}
 		<button on:click={switchExpanded}>i want to bring {name}</button>
 	{/if}
+
 	{#if expanded}
-		<form method="POST" on:submit={handleSubmit}>
+		<form on:submit={assignVolunteer}>
 			<label for="volunteer">what is your name?</label>
 			<input bind:value={volunteerInput} type="text" name="volunteer" />
 			<button>i will bring {name}!</button>
@@ -71,5 +88,23 @@
 	}
 	input:focus {
 		outline: none;
+	}
+
+	table {
+		table-layout: fixed;
+
+		width: 100%;
+	}
+	tr td:nth-child(1) {
+		text-align: end;
+	}
+	tr td:nth-child(2) {
+		text-align: start;
+	}
+	td button {
+		margin: 0;
+	}
+	td {
+		padding: 10px;
 	}
 </style>

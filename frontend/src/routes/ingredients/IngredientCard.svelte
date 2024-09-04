@@ -1,19 +1,25 @@
 <script lang="ts">
 	import axios from 'axios';
+	import { PUBLIC_BACKEND_URL } from '$env/static/public';
 
 	let expanded: boolean = false,
 		volunteerInput: string = '';
 
 	export let ingredientId: string, name: string, volunteer: string | undefined;
 
-	function handleVolunteer() {
-		expanded = true;
-	}
-	async function handleSubmit() {
-		await axios.post('http://localhost:3000/ingredients/assignVolunteer', {
+	export async function assignVolunteer() {
+		await axios.post(`${PUBLIC_BACKEND_URL}/ingredients/assignVolunteer`, {
 			ingredientId,
 			volunteer: volunteerInput
 		});
+	}
+
+	function switchExpanded() {
+		expanded = !expanded;
+	}
+
+	async function handleSubmit() {
+		assignVolunteer();
 		volunteer = volunteerInput;
 		expanded = false;
 	}
@@ -26,16 +32,20 @@
 <div class="card">
 	<h1>{name}</h1>
 	{#if volunteer}
-		<h2>{volunteer}</h2>
+		<h3>claimed!</h3>
+		<h2>who's bringing {name}?</h2>
+		<h4>{volunteer}</h4>
 	{/if}
-	<h3>{ingredientId}</h3>
-	{#if !volunteer}
-		<button on:click={handleVolunteer}>i want to bring this</button>
+	{#if !volunteer && !expanded}
+		<button on:click={switchExpanded}>i want to bring {name}</button>
 	{/if}
 	{#if expanded}
-		<label for="volunteer">what is your name?</label>
-		<input bind:value={volunteerInput} type="text" name="volunteer" />
-		<button on:click={handleSubmit}>submit</button>
+		<form method="POST" on:submit={handleSubmit}>
+			<label for="volunteer">what is your name?</label>
+			<input bind:value={volunteerInput} type="text" name="volunteer" />
+			<button>i will bring {name}!</button>
+		</form>
+		<button on:click={switchExpanded}>cancel</button>
 	{/if}
 </div>
 
@@ -54,5 +64,12 @@
 		margin: 10px;
 		background-color: var(--bg-color);
 		border: 2px solid black;
+	}
+	input {
+		background-color: var(--bg-color);
+		border: 2px solid black;
+	}
+	input:focus {
+		outline: none;
 	}
 </style>

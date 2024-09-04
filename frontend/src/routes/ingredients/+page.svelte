@@ -1,5 +1,4 @@
 <script lang="ts">
-	import axios from 'axios';
 	import IngredientCard from './IngredientCard.svelte';
 
 	type Ingredient = {

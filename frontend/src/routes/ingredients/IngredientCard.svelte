@@ -89,6 +89,7 @@
 		margin: 10px;
 		background-color: var(--bg-color);
 		border: 2px solid black;
+		color: black;
 	}
 	input {
 		background-color: var(--bg-color);

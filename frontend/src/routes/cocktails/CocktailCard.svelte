@@ -42,5 +42,6 @@
 		margin: 10px;
 		background-color: var(--bg-color);
 		border: 2px solid black;
+		color: black;
 	}
 </style>
